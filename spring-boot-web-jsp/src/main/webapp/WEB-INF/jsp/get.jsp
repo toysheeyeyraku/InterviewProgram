@@ -8,5 +8,26 @@
         
        ${data}
         ${question}
+       
+        
+        <form th:action="@{/geti}" method="post" enctype="application/json">
+            <div><label> Comment <input type="text" name="comment"/> </label></div>
+            
+            <input type="hidden"
+    		name="${_csrf.parameterName}"
+    		value="${_csrf.token}"/>
+            <div><input type="submit" value="Add Comment"/></div>
+        </form>
+        
+        <form th:action="@{/end}" method="post" enctype="application/json">
+           <input type="hidden" name="end"/> 
+            
+            <input type="hidden"
+    		name="${_csrf.parameterName}"
+    		value="${_csrf.token}"/>
+            <div><input type="submit" value="End Interview"/></div>
+        </form>
+        
+      ${warn} 
     </body>
 </html>

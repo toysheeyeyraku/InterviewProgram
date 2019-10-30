@@ -24,13 +24,7 @@ public class UserService implements UserDetailsService {
 	private Dao userDao;
 	@Override
 	public UserDetails loadUserByUsername(String arg0) throws UsernameNotFoundException {
-		/*User u =new User();
-		ArrayList<Role> rr=new ArrayList<Role>();
-		rr.add(Role.ADMIN);
-		u.setAuthorities(rr);
-		u.setPassword("as");
-		u.setUsername("t");
-		userDao.saveUser(u);*/
+		
 		Optional<User> w=userDao.findByUsername(arg0);
 		if (w.isPresent()) {
 			return w.get();

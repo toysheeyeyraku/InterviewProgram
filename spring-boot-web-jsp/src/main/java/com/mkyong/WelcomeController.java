@@ -29,10 +29,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import formdata.AddUserBody;
+import formdata.EndInterviewData;
 import formdata.FileFormData;
 import formdata.QuestionTypeFormData;
 import javafx.scene.input.DataFormat;
@@ -97,24 +99,53 @@ public class WelcomeController {
         return "redirect:/choose";}
 	
 	@PostMapping("/get")
-    public String getQuestion(Principal principal,@ModelAttribute QuestionTypeFormData form,Map<String, Object> model) 
+    public String getQuestion(Principal principal,@ModelAttribute QuestionTypeFormData form,
+    		@RequestParam(value="comment",required=false)String comment,
+    		@ModelAttribute EndInterviewData end
+    		,Map<String, Object> model) 
     		throws IOException, EncryptedDocumentException, InvalidFormatException {
-		
-		String question= service.getQuestion(principal.getName(),form.getType() );
+		String question=null ;
+		if (form.getType()!=null) {
+			
+			
+			 if (service.getLastQuestion(principal.getName())==null||
+					 service.getLastQuestion(principal.getName())=="No question any more"||
+					 service.isStored(principal.getName(),service.getLastType(principal.getName())+"-"+ service.getLastQuestion(principal.getName()))) {
+				 question= service.getQuestion(principal.getName(),form.getType() );
+			 }else {
+				 model.put("warn", "No stored");
+			 }
+			
+		}
+		if (comment!=null&& comment.length()>0) {
+			if (service.getLastType(principal.getName())!=null) {
+				service.addComment(principal.getName(), comment,service.getLastType(principal.getName()));
+			}
+			
+		}
 		if (question==null) {
-			question="No Questions any more";
+			question=service.getLastQuestion(principal.getName());
+		}
+		if (end.getEnd()!=null) {
+			service.endInterview(principal.getName());
+			return "redirect:/upload";
 		}
 	     model.put("question", question);
 	     model.put("data", service.getGetPage());
+	     
         return "get";
     }
+	
+	
 	@GetMapping("/get")
     public String getQuestionget(Principal principal,Map<String, Object> model) 
     		throws IOException, EncryptedDocumentException, InvalidFormatException {
 		
-		 service.addSession(principal.getName());
+		
+		service.addSession(principal.getName());
+		
 		 model.put("data", service.getGetPage());
-	  
+		
         return "get";
     }
 	

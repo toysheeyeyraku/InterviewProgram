@@ -3,6 +3,8 @@ package services;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -71,6 +73,9 @@ public class MainService {
 		userSesstion.remove(name);
 	}
 	public void addSession(String name) {
+		if (userSesstion.containsKey(name)) {
+			return ;
+		}
 		userSesstion.put(name, new services.Session(file,name));
 	}
 	public String  getQuestion(String name,String type) {
@@ -97,13 +102,38 @@ public class MainService {
 				"            <div><input type=\"submit\" value=\"%s\"/></div>\r\n" + 
 				"        </form>";
 		StringBuilder ans =new StringBuilder();
-		for (String s:p) {
-			ans.append(String.format(shab, s,s));
+		if (p!=null) {
+			for (String s:p) {
+				ans.append(String.format(shab, s,s));
+			}
 		}
 		data=ans.toString();
 		return ans.toString();
 	}
 	public String getGetPage() {
 		return data;
+	}
+	public String getLastQuestion(String user) {
+		return userSesstion.get(user).getLastquestion();
+	}
+	public void addComment(String user,String comment,String type) {
+		userSesstion.get(user).storeComment(comment,type);
+	}
+	public void endInterview(String user) throws FileNotFoundException, UnsupportedEncodingException {
+		Session s=userSesstion.get(user);
+		String data=s.buildQC();
+		userSesstion.remove(user);
+		PrintWriter writer = new PrintWriter("the-file-name.txt", "UTF-8");
+		writer.print(data);
+		writer.close();
+	}
+	public String getLastType(String user) {
+		return userSesstion.get(user).getLasttype();
+	}
+	public boolean isStored(String user,String question) {
+		if (userSesstion.get(user).getQuestionComment().containsKey(question)) {
+			return true;
+		}
+		return false;
 	}
 }
