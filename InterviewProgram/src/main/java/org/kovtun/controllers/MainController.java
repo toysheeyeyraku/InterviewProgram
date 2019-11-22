@@ -26,7 +26,7 @@ public class MainController {
 	@Autowired
 	private MainService service;
 
-	@GetMapping("/upload")
+	@GetMapping("/")
 	public String listUploadedFiles(Model model) throws IOException {
 		return "upload";
 	}
@@ -62,7 +62,7 @@ public class MainController {
 		}
 		if (end.getEnd() != null) {
 			service.endInterview("default");
-			return "redirect:/upload";
+			return "redirect:/";
 		}
 		model.put("question", question);
 		model.put("data", service.getGetPage());
