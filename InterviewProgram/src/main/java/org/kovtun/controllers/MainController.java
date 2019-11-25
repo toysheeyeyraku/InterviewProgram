@@ -2,6 +2,7 @@ package org.kovtun.controllers;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Map;
 
 import org.apache.poi.EncryptedDocumentException;
@@ -63,7 +64,7 @@ public class MainController {
 			return "redirect:/";
 		}
 		model.put("question", question);
-		model.put("data", service.getGetPage());
+		model.put("data", service.getData());
 
 		return "get";
 	}
@@ -72,22 +73,27 @@ public class MainController {
 	public String getQuestionget(Map<String, Object> model)
 			throws IOException, EncryptedDocumentException, InvalidFormatException {
 		service.addSession("default");
-		model.put("data", service.getGetPage());
+		model.put("data", service.getData());
 		return "get";
 	}
 
 	@PostMapping(path = "/choose")
 
-	public String chooseGet(Principal principal, @ModelAttribute Choose v) throws IOException {
-		service.buildegetPage(v.getDef());
+	public String chooseGet( @ModelAttribute Choose v) throws IOException {
+		service.setDataGet(v.getDef());
 		return "redirect:/get";
 	}
 
 	@GetMapping("/choose")
 	public String testget(Map<String, Object> model) throws IOException {
-		model.put("body", service.buildCheckBoxes());
+		service.processChoose(model);
 
 		return "choose";
 	}
-
+	@GetMapping("/test")
+	public String testmap(Map<String, Object> model) {
+		model.put("s", "some value");
+		
+		return "test";
+	}
 }

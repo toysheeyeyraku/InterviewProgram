@@ -4,7 +4,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -18,7 +20,10 @@ public class MainService {
 
 	private ParserFile file;
 	private HashMap<String, Session> userSesstion = new HashMap<String, Session>();
-
+	private ArrayList<String> data;
+	public ArrayList<String> getData(){
+		return data;
+	}
 	public void loadFile(MultipartFile file) throws EncryptedDocumentException, InvalidFormatException, IOException {
 		this.file = new ParserFile(file);
 
@@ -40,37 +45,19 @@ public class MainService {
 		return userSesstion.get(name).getQuestion(type);
 	}
 
-	public String buildCheckBoxes() {
-
-		StringBuilder body = new StringBuilder();
-		String s = "<label >%s</label><input type=\"checkbox\"  name=\"def\" value=\"%s\"><Br>";
-		for (String key : file.typeQuestions.keySet()) {
-			body.append(String.format(s, key, key) + "\n");
+	public Map<String,Object> processChoose(Map<String,Object> obj)  {
+		obj.put("body", new ArrayList<String>( file.typeQuestions.keySet()));
+		return obj;
+	}
+	public void setDataGet(String [] data) {
+		this.data =new ArrayList<String>();
+		for (String s:data) {
+			this.data.add(s);
 		}
-		return body.toString();
 	}
+	
 
-	private String data;
-
-	public String buildegetPage(String[] p) {
-		String shab = "<form th:action=\"@{/get}\" method=\"post\" enctype=\"application/json\">\r\n"
-				+ "             <input type=\"hidden\" name=\"type\" value=\"%s\"/> \r\n" + "           \r\n"
-				+ "            <input type=\"hidden\"\r\n" + "    		name=\"${_csrf.parameterName}\"\r\n"
-				+ "    		value=\"${_csrf.token}\"/>\r\n"
-				+ "            <div><input type=\"submit\" value=\"%s\"/></div>\r\n" + "        </form>";
-		StringBuilder ans = new StringBuilder();
-		if (p != null) {
-			for (String s : p) {
-				ans.append(String.format(shab, s, s));
-			}
-		}
-		data = ans.toString();
-		return ans.toString();
-	}
-
-	public String getGetPage() {
-		return data;
-	}
+	
 
 	public String getLastQuestion(String user) {
 		return userSesstion.get(user).getLastquestion();
