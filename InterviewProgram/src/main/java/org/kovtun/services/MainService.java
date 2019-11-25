@@ -40,7 +40,7 @@ public class MainService {
 		return userSesstion.get(name).getQuestion(type);
 	}
 
-	public String BuildCheckBoxes() {
+	public String buildCheckBoxes() {
 
 		StringBuilder body = new StringBuilder();
 		String s = "<label >%s</label><input type=\"checkbox\"  name=\"def\" value=\"%s\"><Br>";
@@ -52,7 +52,7 @@ public class MainService {
 
 	private String data;
 
-	public String BuildegetPage(String[] p) {
+	public String buildegetPage(String[] p) {
 		String shab = "<form th:action=\"@{/get}\" method=\"post\" enctype=\"application/json\">\r\n"
 				+ "             <input type=\"hidden\" name=\"type\" value=\"%s\"/> \r\n" + "           \r\n"
 				+ "            <input type=\"hidden\"\r\n" + "    		name=\"${_csrf.parameterName}\"\r\n"
