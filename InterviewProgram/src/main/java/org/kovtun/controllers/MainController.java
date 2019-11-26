@@ -31,7 +31,11 @@ public class MainController {
 	private MainService service;
 
 	@GetMapping("/")
-	public String listUploadedFiles(Model model) throws IOException {
+	public String listUploadedFiles(Map<String, Object> model) throws IOException {
+		ArrayList<String> mas =new ArrayList<String>();
+		mas.add("Value1");
+		mas.add("Value2");
+		model.put("students",mas);
 		return "upload";
 	}
 
@@ -78,7 +82,13 @@ public class MainController {
 	@PostMapping(path = "/choose")
 
 	public String chooseGet( @ModelAttribute Choose v) throws IOException {
-		service.setDataGet(v.getDef());
+		if (v!=null) {
+			service.setDataGet(v.getDef());
+		}else {
+			
+			service.setDataGet(new ArrayList<String>() );
+		}
+		
 		return "redirect:/get";
 	}
 

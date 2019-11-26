@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.poi.EncryptedDocumentException;
@@ -49,11 +50,9 @@ public class MainService {
 		obj.put("body", new ArrayList<String>( file.typeQuestions.keySet()));
 		return obj;
 	}
-	public void setDataGet(String [] data) {
-		this.data =new ArrayList<String>();
-		for (String s:data) {
-			this.data.add(s);
-		}
+	public void setDataGet(ArrayList<String> data) {
+		this.data = data;
+		
 	}
 	
 
