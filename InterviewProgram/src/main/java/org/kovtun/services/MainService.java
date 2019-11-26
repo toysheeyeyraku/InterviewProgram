@@ -60,7 +60,7 @@ public class MainService {
 	
 
 	public String getLastQuestion(String user) {
-		return userSesstion.get(user).getLastquestion();
+		return userSesstion.get(user).getLastQuestion();
 	}
 
 	public void addComment(String user, String comment, String type) {
@@ -77,7 +77,7 @@ public class MainService {
 	}
 
 	public String getLastType(String user) {
-		return userSesstion.get(user).getLasttype();
+		return userSesstion.get(user).getLastType();
 	}
 
 	public boolean isStored(String user, String question) {

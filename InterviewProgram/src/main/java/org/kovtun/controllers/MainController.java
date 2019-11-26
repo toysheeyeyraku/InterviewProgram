@@ -1,6 +1,8 @@
 package org.kovtun.controllers;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Map;
@@ -12,10 +14,13 @@ import org.kovtun.services.MainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -39,30 +44,23 @@ public class MainController {
 
 	@PostMapping("/get")
 	public String getQuestion(@RequestParam(value="type",required = false) String type,
-			@RequestParam(value = "comment", required = false) String comment, @RequestParam(value="end",required = false) String end,
+			
 			Map<String, Object> model) throws IOException, EncryptedDocumentException, InvalidFormatException {
 		String question = null;
-		if (type != null) {
+		
 			if (service.getLastQuestion("default") == null
 					|| service.getLastQuestion("default").equals( "No question any more" )|| service.isStored("default",
 							service.getLastType("default") + "-" + service.getLastQuestion("default"))) {
 				question = service.getQuestion("default", type);
 			} else {
-				model.put("warn", "No stored");
+				model.put("warn", "<div id='noStored'>No Stored</div>");
 			}
-		}
-		if (comment != null && comment.length() > 0) {
-			if (service.getLastType("default") != null) {
-				service.addComment("default", comment, service.getLastType("default"));
-			}
-		}
+		
+		
 		if (question == null) {
 			question = service.getLastQuestion("default");
 		}
-		if (end != null) {
-			service.endInterview("default");
-			return "redirect:/";
-		}
+		
 		model.put("question", question);
 		model.put("data", service.getData());
 
@@ -95,5 +93,24 @@ public class MainController {
 		model.put("s", "some value");
 		
 		return "test";
+	}
+	@PostMapping("/endinterview")
+	@ResponseBody
+	@CrossOrigin
+	public String endInterview() throws FileNotFoundException, UnsupportedEncodingException {
+		service.endInterview("default");
+		return "ok";
+	}
+	@PostMapping("/addComment")
+	@ResponseBody
+	@CrossOrigin
+	public String addComment(@RequestBody String comment) throws FileNotFoundException, UnsupportedEncodingException {
+		System.out.println(comment);
+		if (comment != null && comment.length() > 0) {
+			if (service.getLastType("default") != null) {
+				service.addComment("default", comment, service.getLastType("default"));
+			}
+		}
+		return "ok";
 	}
 }

@@ -29,6 +29,10 @@ hs_err_pid*
 ### Maven ###
 InterviewProgram/target/
 InterviewProgram/bin/
+InterviewProgram/.settings/
+InterviewProgram/.classpath
+InterviewProgram/.project
+InterviewProgram/the-file-name.txt
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup

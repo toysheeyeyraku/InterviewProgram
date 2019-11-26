@@ -25,24 +25,49 @@
         ${question}
        
         
-        <form th:action="@{/geti}" method="post" enctype="application/json">
-            <div><label> Comment <input type="text" name="comment"/> </label></div>
-            
-            <input type="hidden"
-    		name="${_csrf.parameterName}"
-    		value="${_csrf.token}"/>
-            <div><input type="submit" value="Add Comment"/></div>
-        </form>
         
-        <form th:action="@{/end}" method="post" enctype="application/json">
-           <input type="hidden" name="end"/> 
+         <div>
+         <div><label> Comment <input id="commentInput" type="text" name="comment"/> </label></div>
             
-            <input type="hidden"
-    		name="${_csrf.parameterName}"
-    		value="${_csrf.token}"/>
-            <div><input type="submit" value="End Interview"/></div>
-        </form>
+           
+            <button type="button" id="addComment" >Add Comment</button>
+         </div>
+       
         
+       
+        <button type="button" id="end">End Interview</button>
       ${warn} 
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+      <script>
+      $( "#end" ).on( "click", function() {
+    	  $.ajax({
+    	        type: "POST",
+    	        url: 'http://localhost:8080/endinterview',
+    	        dataType: 'text',
+    	        
+    	        async: false,
+    	        success: function (data) {
+    	            document.location.href='http://localhost:8080/';
+    	        }
+    	    });
+    	});
+	</script>
+	<script>
+	
+      $( "#addComment" ).on( "click", function() {
+    	  
+    	  $.ajax({
+    	        type: "POST",
+    	        url: 'http://localhost:8080/addComment',
+    	        dataType: 'text',
+    	        data : $('#commentInput').val(),
+    	        async: false,
+    	        success: function (data) {
+    	        	$('#commentInput').val("");
+    	        	$('#noStored').text('Stored');
+    	        }
+    	    });
+    	});
+	</script>
     </body>
 </html>

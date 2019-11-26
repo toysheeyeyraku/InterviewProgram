@@ -12,14 +12,14 @@ public class Session {
 	private String userName;
 	private ParserFile file;
 	private HashMap<String, String> questionComment = new HashMap<String, String>();
-
+	private String lastType;
+	private String lastQuestion;
 	public Session(ParserFile file, String userName) {
 		this.file = file;
 		this.userName = userName;
 	}
 
-	private String lasttype;
-	private String lastquestion;
+	
 
 	public String getQuestion(String type) {
 		if (file == null) {
@@ -33,7 +33,7 @@ public class Session {
 		}
 
 		if (file.typeQuestions.get(type).size() == answered.get(type).size()) {
-			lastquestion = "No question any more";
+			lastQuestion = "No question any more";
 			return null;
 		}
 		Random rand = new Random();
@@ -46,16 +46,16 @@ public class Session {
 				break;
 			}
 		}
-		lasttype = type;
-		lastquestion = file.typeQuestions.get(type).get(ans);
+		lastType = type;
+		lastQuestion = file.typeQuestions.get(type).get(ans);
 		return file.typeQuestions.get(type).get(ans);
 
 	}
 
 	public void storeComment(String com, String type) {
 
-		if (lastquestion != null && !lastquestion.equals("No question any more")) {
-			questionComment.put(type + "-" + lastquestion, com);
+		if (lastQuestion != null && !lastQuestion.equals("No question any more")) {
+			questionComment.put(type + "-" + lastQuestion, com);
 		}
 	}
 
