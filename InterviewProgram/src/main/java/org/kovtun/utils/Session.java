@@ -1,5 +1,6 @@
 package org.kovtun.utils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
@@ -59,12 +60,12 @@ public class Session {
 		}
 	}
 
-	public String buildQC() {
-		StringBuilder ans = new StringBuilder();
+	public ArrayList<String> getQuestionsWithComments(){
+		ArrayList<String> ans =new ArrayList<String>();
 		for (java.util.Map.Entry<String, String> k : questionComment.entrySet()) {
-			ans.append(k.getKey() + " " + k.getValue() + "\n");
+			ans.add(k.getKey() + " " + k.getValue() + "\n");
 		}
-		return ans.toString();
+		return ans;
 	}
 
 }

@@ -107,14 +107,14 @@ public class MainController {
 	@PostMapping("/endinterview")
 	@ResponseBody
 	@CrossOrigin
-	public String endInterview() throws FileNotFoundException, UnsupportedEncodingException {
-		service.endInterview("default");
+	public String endInterview(@RequestParam("name") String respondent) throws FileNotFoundException, UnsupportedEncodingException {
+		service.endInterview(respondent);
 		return "ok";
 	}
 	@PostMapping("/addComment")
 	@ResponseBody
 	@CrossOrigin
-	public String addComment(@RequestBody String comment) throws FileNotFoundException, UnsupportedEncodingException {
+	public String addComment(@RequestParam("comment")String comment) throws FileNotFoundException, UnsupportedEncodingException {
 		System.out.println(comment);
 		if (comment != null && comment.length() > 0) {
 			if (service.getLastType("default") != null) {
