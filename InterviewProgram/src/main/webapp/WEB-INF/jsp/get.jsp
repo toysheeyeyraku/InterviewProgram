@@ -46,38 +46,51 @@
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script>
-		$("#end").on("click", function() {
-			if ($('#Respondent').val().length==0){
-				return ;
-			}
-			
-			$.ajax({
-				type : "POST",
-				url : 'http://localhost:8080/endinterview',
-				contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-				data:{"name": $('#Respondent').val()},
-				async : false,
-				success : function(data) {
-					document.location.href = 'http://localhost:8080/';
-				}
-			});
-		});
+		$("#end")
+				.on(
+						"click",
+						function() {
+							if ($('#Respondent').val().length == 0) {
+								return;
+							}
+
+							$
+									.ajax({
+										type : "POST",
+										url : 'http://localhost:8080/endinterview',
+										contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
+										data : {
+											"name" : $('#Respondent').val()
+										},
+										async : false,
+										success : function(data) {
+											document.location.href = 'http://localhost:8080/';
+										}
+									});
+						});
 	</script>
 	<script>
-		$("#addComment").on("click", function() {
+		$("#addComment")
+				.on(
+						"click",
+						function() {
 
-			$.ajax({
-				type : "POST",
-				url : 'http://localhost:8080/addComment',
-				contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-				data : {"comment":$('#commentInput').val()},
-				async : false,
-				success : function(data) {
-					$('#commentInput').val("");
-					$('#noStored').text('Stored');
-				}
-			});
-		});
+							$
+									.ajax({
+										type : "POST",
+										url : 'http://localhost:8080/addComment',
+										contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
+										data : {
+											"comment" : $('#commentInput')
+													.val()
+										},
+										async : false,
+										success : function(data) {
+											$('#commentInput').val("");
+											$('#noStored').text('Stored');
+										}
+									});
+						});
 	</script>
 </body>
 </html>

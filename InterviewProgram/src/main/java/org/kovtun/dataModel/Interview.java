@@ -13,7 +13,7 @@ public class Interview {
 	@Id
 	private String id;
 	private String respondent;
-	private LocalDate date;
+	private String date;
 	private ArrayList<String> questionsWithComments;
 	
 }

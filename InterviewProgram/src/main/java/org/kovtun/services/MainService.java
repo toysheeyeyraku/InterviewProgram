@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.jasper.tagplugins.jstl.core.Choose;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.kovtun.Dao.Dao;
@@ -23,21 +24,54 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class MainService {
 	@Autowired
-	Dao dao;
+	private Dao dao;
 	private ParserFile file;
-	private HashMap<String, Session> userSesstion = new HashMap<String, Session>();
+	public HashMap<String, Session> userSesstion = new HashMap<String, Session>();
 	private ArrayList<String> data;
+	
+	public void processGetPost(Map<String, Object> model, String type) {
+		String question = null;
+		if (!isCommented("default")) {
+			model.put("warn", "No commented");
+		} else {
+			question = getQuestion("default", type);
+		}
 
-	public ArrayList<String> getData() {
-		return data;
+		if (question == null) {
+			question = getLastQuestion("default");
+			if (question == null) {
+				model.put("qustion", "No question");
+			} else {
+				model.put("question", question);
+			}
+		}else {
+			model.put("question", question);
+		}
+
+		model.put("data", data);
 	}
 
-	public void loadFile(MultipartFile file) throws EncryptedDocumentException, InvalidFormatException, IOException {
+	public void processGetGet(Map<String, Object> model) {
+		
+		model.put("data", data);
+	}
+
+	public void processChoosePost(Map<String, Object> model, org.kovtun.models.Choose v) {
+		if (v != null) {
+			data = v.getDef();
+		} else {
+
+			data = new ArrayList<String>();
+		}
+	}
+
+	
+    public void loadFile(MultipartFile file) throws EncryptedDocumentException, InvalidFormatException, IOException {
 		this.file = new ParserFile(file);
 
 	}
 
-	public void deleteSession(String name) {
+	private void deleteSession(String name) {
 		userSesstion.remove(name);
 	}
 
@@ -48,7 +82,7 @@ public class MainService {
 		userSesstion.put(name, new org.kovtun.utils.Session(file, name));
 	}
 
-	public String getQuestion(String name, String type) {
+	private String getQuestion(String name, String type) {
 
 		return userSesstion.get(name).getQuestion(type);
 	}
@@ -56,11 +90,6 @@ public class MainService {
 	public Map<String, Object> processChoose(Map<String, Object> obj) {
 		obj.put("body", new ArrayList<String>(file.typeQuestions.keySet()));
 		return obj;
-	}
-
-	public void setDataGet(ArrayList<String> data) {
-		this.data = data;
-
 	}
 
 	public String getLastQuestion(String user) {
@@ -75,11 +104,11 @@ public class MainService {
 		Session s = userSesstion.get("default");
 
 		Interview interview = new Interview();
-		interview.setDate(LocalDate.now());
+		interview.setDate(LocalDate.now().toString());
 		interview.setQuestionsWithComments(s.getQuestionsWithComments());
 		interview.setRespondent(respondent);
 		dao.AddInterview(interview);
-		userSesstion.remove("default");
+		deleteSession("default");
 
 	}
 
@@ -93,4 +122,28 @@ public class MainService {
 		}
 		return false;
 	}
+
+	public boolean isCommented(String user) {
+		return userSesstion.get(user).isStored();
+	}
+	public String processGetDates(Map<String,Object> model,Integer list) {
+		ArrayList<Interview> ans =new ArrayList<Interview>();
+		List<Interview> mas=dao.getLastInterviews();
+		for (int i=list*5;i<Math.min( dao.getLastInterviews().size(),5*list+5);i++) {
+			ans.add(mas.get(i));
+		}
+		model.put("data", ans);
+		model.put("current", list);
+		return "dates";
+	}
+	public List<Interview> getInterviewByDate(String date,Integer list){
+		List<Interview> data =dao.getInterviewsByDate(date);
+		System.out.println(data.size());
+		ArrayList<Interview> ans =new ArrayList<>();
+		for (int i=list*5;i<Math.min(list*5+5, data.size());i++) {
+			ans.add(data.get(i));
+		}
+		return ans;
+	}
+	
 }
