@@ -1,13 +1,17 @@
 package org.kovtun.models;
 
-
-
 import java.util.ArrayList;
-import java.util.List;
 
 import lombok.Data;
+
+/**
+ * 
+ * @author Bogdan Kovtun
+ * @version 1
+ */
 @Data
 public class Choose {
-	private ArrayList<String> def;
-	
+	/**This class is used as a ModelAttribute to get selected topic types*/
+	private ArrayList<String> options;
+
 }

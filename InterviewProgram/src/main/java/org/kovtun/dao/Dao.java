@@ -1,27 +1,30 @@
-package org.kovtun.Dao;
+package org.kovtun.dao;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
-import org.kovtun.dataModel.Interview;
+import org.kovtun.datamodel.Interview;
 import org.kovtun.repositories.InterviewRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+/**
+ * 
+ * @author Bogdan Kovtun
+ * @version 1
+ */
 @Service
 public class Dao {
 	@Autowired
 	InterviewRepository interviewRepository;
 
-	public void AddInterview(Interview interview) {
+	public void addInterview(Interview interview) {
 		interviewRepository.insert(interview);
 	}
-	public List<Interview> getLastInterviews(){
+
+	public List<Interview> getLastInterviews() {
 		return interviewRepository.findByTimeAll();
 	}
-	public List<Interview>getInterviewsByDate(String date){
+
+	public List<Interview> getInterviewsByDate(String date) {
 		return interviewRepository.findByDate(date);
 	}
 }

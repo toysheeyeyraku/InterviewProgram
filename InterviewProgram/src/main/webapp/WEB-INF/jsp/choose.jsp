@@ -10,7 +10,7 @@
 				
 				<c:forEach items="${body}" var="s">
 				
-				<label >${s}</label><input type="checkbox"  name="def" value="${s}"><Br>
+				<label >${s}</label><input type="checkbox"  name="options" value="${s}"><Br>
 				</c:forEach>
 			<input type="hidden"
     		name="${_csrf.parameterName}"
