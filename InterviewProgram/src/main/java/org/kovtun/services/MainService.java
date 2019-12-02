@@ -54,28 +54,28 @@ public class MainService {
 	}
 
 	/** This method gets topic types from session */
-	public ArrayList<String> getTypes() {
+	public ArrayList<String> getTypes(String sessionName) {
 		ArrayList<String> ans = new ArrayList<String>();
-		for (String s : sessionManager.getSession("default").getQuestionManager().getTypes()) {
+		for (String s : sessionManager.getSession(sessionName).getQuestionManager().getTypes()) {
 			ans.add(s);
 		}
 		return ans;
 	}
 
-	public void addComment(String comment) {
-		sessionManager.getSession("default").getQuestionManager().storeComment(comment);
+	public void addComment(String comment,String sessionName) {
+		sessionManager.getSession(sessionName).getQuestionManager().storeComment(comment);
 	}
 
-	public void endInterview(String respondent) 
+	public void endInterview(String respondent,String sessionName) 
 			throws FileNotFoundException, UnsupportedEncodingException {
-		org.kovtun.session.Session s = sessionManager.getSession("default");
+		org.kovtun.session.Session s = sessionManager.getSession(sessionName);
 
 		Interview interview = new Interview();
 		interview.setDate(LocalDate.now().toString());
 		interview.setQuestionsWithComments(s.getQuestionManager().getQuestionWithComments());
 		interview.setRespondent(respondent);
 		dao.addInterview(interview);
-		deleteSession("default");
+		deleteSession(sessionName);
 	}
 
 	public ArrayList<Interview> getAllInterviews(Integer offset) {

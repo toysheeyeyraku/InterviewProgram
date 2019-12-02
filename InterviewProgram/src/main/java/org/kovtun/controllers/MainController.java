@@ -120,7 +120,7 @@ public class MainController {
 			model.put("warn", "session not created");
 			return "error1";
 		}
-		model.put("body", service.getTypes());
+		model.put("body", service.getTypes("default"));
 
 		return "choose";
 	}
@@ -130,7 +130,7 @@ public class MainController {
 	@CrossOrigin
 	public String endInterview(@RequestParam("name") String respondent)
 			throws FileNotFoundException, UnsupportedEncodingException {
-		service.endInterview(respondent);
+		service.endInterview(respondent,"default");
 		return "ok";
 	}
 
