@@ -15,6 +15,7 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Data;
+
 /**
  * 
  * @author Bogdan Kovtun
@@ -22,9 +23,12 @@ import lombok.Data;
  */
 @Data
 public class ParserFile {
-	/**Purpose of this class is to parse and store data from exel file*/
-	
-	/**This is type of topic (C#,Java,etc) as key and ArrayList of questions as a value */
+	/** Purpose of this class is to parse and store data from exel file */
+
+	/**
+	 * This is type of topic (C#,Java,etc) as key and ArrayList of questions as a
+	 * value
+	 */
 	private HashMap<String, ArrayList<String>> typeQuestions = new HashMap<String, ArrayList<String>>();
 
 	public ParserFile(MultipartFile file) throws EncryptedDocumentException, InvalidFormatException, IOException {

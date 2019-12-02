@@ -10,7 +10,8 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
  * @author Bogdan Kovtun
  * @version 1
  */
-@SpringBootApplication(scanBasePackages = { "org.kovtun.services", 
+@SpringBootApplication(scanBasePackages = { 
+		"org.kovtun.services", 
 		"org.kovtun.utils", 
 		"org.kovtun.models",
 		"org.kovtun.formdata", 
@@ -18,7 +19,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 		"org.kovtun.start", 
 		"org.kovtun.repositories",
 		"org.kovtun.services", 
-		"org.kovtun.Dao", 
+		"org.kovtun.dao", 
 		"org.kovtun.dataModel",
 		"org.kovtun.configuration"
 		})

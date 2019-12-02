@@ -7,6 +7,7 @@ import org.kovtun.sessionmanager.SessionManagerImplementation;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
+
 /**
  * 
  * @author Bogdan Kovtun
@@ -18,6 +19,7 @@ public class MainConfiguration {
 	public SessionManager getSesstionManager() {
 		return new SessionManagerImplementation();
 	}
+
 	@Bean
 	@Scope("prototype")
 	public QuestionManager getQuestionManager() {

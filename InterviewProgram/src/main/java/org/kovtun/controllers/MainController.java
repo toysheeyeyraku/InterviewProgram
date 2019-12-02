@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 /**
  * 
  * @author Bogdan Kovtun
@@ -130,7 +131,7 @@ public class MainController {
 	@CrossOrigin
 	public String endInterview(@RequestParam("name") String respondent)
 			throws FileNotFoundException, UnsupportedEncodingException {
-		service.endInterview(respondent,"default");
+		service.endInterview(respondent, "default");
 		return "ok";
 	}
 

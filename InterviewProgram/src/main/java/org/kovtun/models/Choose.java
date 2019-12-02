@@ -11,7 +11,7 @@ import lombok.Data;
  */
 @Data
 public class Choose {
-	/**This class is used as a ModelAttribute to get selected topic types*/
+	/** This class is used as a ModelAttribute to get selected topic types */
 	private ArrayList<String> options;
 
 }
